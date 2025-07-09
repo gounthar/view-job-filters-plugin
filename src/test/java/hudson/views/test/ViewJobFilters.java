@@ -102,14 +102,15 @@ public class ViewJobFilters {
             boolean disabled,
             boolean stable,
             boolean notBuilt) {
-        return new JobStatusFilter(
+        JobStatusFilter filter = new JobStatusFilter(
                 unstable,
                 failed,
                 aborted,
                 disabled,
                 stable,
-                notBuilt,
                 includeMatched.name());
+        filter.setNotBuilt(notBuilt);
+        return filter;
     }
 
     public static JobTypeFilter jobType(TopLevelItemDescriptor descriptor) {

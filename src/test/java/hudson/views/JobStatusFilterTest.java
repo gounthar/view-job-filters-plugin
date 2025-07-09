@@ -76,33 +76,39 @@ public class JobStatusFilterTest extends AbstractJenkinsTest {
 	public void testConfigRoundtrip() throws Exception {
 		testConfigRoundtrip(
 			"view-1",
-			new JobStatusFilter(false, true, false, true, false, false, excludeMatched.name())
+			new JobStatusFilter(false, true, false, true, false, excludeMatched.name())
 		);
 
+		JobStatusFilter filter1 = new JobStatusFilter(true, false, true, false, true, includeMatched.name());
+		JobStatusFilter filter2 = new JobStatusFilter(true, true, false, false, false, excludeMatched.name());
+		
 		testConfigRoundtrip(
 			"view-2",
-			new JobStatusFilter(true, false, true, false, true, false, includeMatched.name()),
-			new JobStatusFilter(true, true, false, false, false, false, excludeMatched.name())
+			filter1,
+			filter2
 		);
 		
 		// Test with NOT_BUILT filtering
+		JobStatusFilter notBuiltFilter = new JobStatusFilter(false, false, false, false, false, includeMatched.name());
+		notBuiltFilter.setNotBuilt(true);
 		testConfigRoundtrip(
 			"view-3",
-			new JobStatusFilter(false, false, false, false, false, true, includeMatched.name())
+			notBuiltFilter
 		);
 	}
 
 	private void testConfigRoundtrip(String viewName, JobStatusFilter... filters) throws Exception {
 		List<JobStatusFilter> expectedFilters = new ArrayList<JobStatusFilter>();
 		for (JobStatusFilter filter: filters) {
-			expectedFilters.add(new JobStatusFilter(
+			JobStatusFilter expectedFilter = new JobStatusFilter(
 				filter.isUnstable(),
 				filter.isFailed(),
 				filter.isAborted(),
 				filter.isDisabled(),
 				filter.isStable(),
-				filter.isNotBuilt(),
-				filter.getIncludeExcludeTypeString()));
+				filter.getIncludeExcludeTypeString());
+			expectedFilter.setNotBuilt(filter.isNotBuilt());
+			expectedFilters.add(expectedFilter);
 		}
 
 		ListView view = createFilteredView(viewName, filters);

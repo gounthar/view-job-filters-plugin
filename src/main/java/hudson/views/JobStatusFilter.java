@@ -9,6 +9,7 @@ import hudson.model.TopLevelItem;
 import jenkins.model.ParameterizedJobMixIn;
 
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	
@@ -21,7 +22,7 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	
 	@DataBoundConstructor
 	public JobStatusFilter(boolean unstable, boolean failed, boolean aborted, 
-			boolean disabled, boolean stable, boolean notBuilt,
+			boolean disabled, boolean stable, 
 			String includeExcludeTypeString) {
 		super(includeExcludeTypeString);
 		this.unstable = unstable;
@@ -29,7 +30,6 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 		this.aborted = aborted;
 		this.disabled = disabled;
 		this.stable = stable;
-		this.notBuilt = notBuilt;
 	}
 	@SuppressWarnings("rawtypes")
 	protected boolean matches(TopLevelItem item) {
@@ -93,5 +93,10 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	}
 	public boolean isNotBuilt() {
 		return notBuilt;
+	}
+	
+	@DataBoundSetter
+	public void setNotBuilt(boolean notBuilt) {
+		this.notBuilt = notBuilt;
 	}
 }
