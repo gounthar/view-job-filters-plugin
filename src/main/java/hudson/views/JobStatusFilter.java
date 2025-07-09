@@ -17,10 +17,11 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	private boolean aborted;
 	private boolean disabled;
 	private boolean stable;
+	private boolean notBuilt;
 	
 	@DataBoundConstructor
 	public JobStatusFilter(boolean unstable, boolean failed, boolean aborted, 
-			boolean disabled, boolean stable, 
+			boolean disabled, boolean stable, boolean notBuilt,
 			String includeExcludeTypeString) {
 		super(includeExcludeTypeString);
 		this.unstable = unstable;
@@ -28,6 +29,7 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 		this.aborted = aborted;
 		this.disabled = disabled;
 		this.stable = stable;
+		this.notBuilt = notBuilt;
 	}
 	@SuppressWarnings("rawtypes")
 	protected boolean matches(TopLevelItem item) {
@@ -52,6 +54,9 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 					return true;
 				}
 				if (unstable && result == Result.UNSTABLE) {
+					return true;
+				}
+				if (notBuilt && result == Result.NOT_BUILT) {
 					return true;
 				}
 			}
@@ -85,5 +90,8 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	}
 	public boolean isStable() {
 		return stable;
+	}
+	public boolean isNotBuilt() {
+		return notBuilt;
 	}
 }

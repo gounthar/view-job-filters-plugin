@@ -100,13 +100,15 @@ public class ViewJobFilters {
             boolean failed,
             boolean aborted,
             boolean disabled,
-            boolean stable) {
+            boolean stable,
+            boolean notBuilt) {
         return new JobStatusFilter(
                 unstable,
                 failed,
                 aborted,
                 disabled,
                 stable,
+                notBuilt,
                 includeMatched.name());
     }
 
