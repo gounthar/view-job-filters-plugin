@@ -1,6 +1,9 @@
 target
 work
 
+# Compiled class files
+*.class
+
 # IntelliJ settings
 .idea
 *.iml
